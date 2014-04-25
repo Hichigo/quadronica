@@ -1,0 +1,93 @@
+@font-face {
+  font-family: LCD;
+  src: url(https://googledrive.com/host/0By97iY3-_VpeQUhqY2F1Tkh4TnM);
+}
+
+.content {
+	position: relative;
+  width: 516px;
+  height: 574px;
+  margin: 50px auto 0;
+}
+
+.board {
+	position: absolute;
+  width: 509px;
+  height: 509px;
+	top: 0;
+	right: 0;
+  border: 3px double #09f;
+}
+
+.score {
+	position: absolute;
+	width: 100px;
+	height: 50px;
+	line-height: 50px;
+	bottom: 0;
+	right: 0;
+	border: 3px double #09f;
+	font-family: LCD;
+	font-size: 20px;
+	color: #fff;
+	text-shadow: 1px 0 0 #000, -1px 0 0 #000, 0 1px 0 #000, 0 -1px 0 #000;
+	text-align: center;
+}
+
+.timer {
+	position: absolute;
+	width: 400px;
+	height: 50px;
+	bottom: 0;
+	right: 109px;
+	border: 3px double #09f;
+}
+
+.fill-timer {
+	width: 0;
+	height: 100%;
+	background: #f90;
+	transition: width .3s;
+}
+
+.tr {
+  width: 100%;
+  height: 51px;
+}
+
+.td {
+  width: 50px;
+  height: 50px;
+  float: left;
+  margin: 0 1px 1px 0;
+  box-shadow: inset 2px 2px 3px rgba(255,255,255,.4), inset -2px -2px 3px rgba(0,0,0,.4);
+  background: #ccc;
+  cursor: pointer;
+  transition: all .3s;
+}
+
+.td:last-child {
+  margin-right: 0;
+}
+
+.tr:last-child .td {
+  margin-bottom: 0;
+}
+
+.active {
+  -webkit-animation: pulse 1s linear infinite;
+/*   background-image: url(http://img-fotki.yandex.ru/get/24/ev-ch.8/0_de7f_c54b89ee_S);*/
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    box-shadow: inset 0 0 5px -1px rgba(0,0,0,.8);
+  }
+  50% {
+    box-shadow: inset 0 0 50px 0px rgba(255, 255, 255, .8);
+  }
+  100% {
+    box-shadow: inset 0 0 5px -1px rgba(0,0,0,.8);
+  }
+}
+
