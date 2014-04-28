@@ -269,15 +269,18 @@
 }
 
 .place {
-	height: 33px;
 	width: 137px;
+	height: 33px;
+	line-height: 33px;
+	text-indent: 5px;
 	float: left;
 	border-bottom: 1px dashed #09f;
 }
 
 .scores {
-	height: 32px;
 	width: 137px;
-	float: left;
+	height: 32px;
 	line-height: 32px;
+	text-indent: 5px;
+	float: left;
 }

@@ -11,7 +11,7 @@ jQuery(function ($) {
 			run = 0,
 			score = 0,
 			timeID,
-			time = 2,
+			time = 120,
 			tps = 400 / time,
 			coordClick = [-1, -1],
 			click = false;
@@ -126,7 +126,7 @@ jQuery(function ($) {
 		$score = $('.score');
     $tr = $('.tr');
 		$fill = $('.fill-timer');
-		$fill.css('width', 400);
+		
 	}
 
   $('.board').on('click', '.td', function () {
@@ -150,9 +150,8 @@ jQuery(function ($) {
   });
 	
 	$('.nav').on('click', '#start', function () {
-		generateBoard();
 		$('.menu').slideUp();
-
+		$fill.css('width', 400);
 		timeID = setInterval(function () {
       var fill = parseInt($fill.css('width'), 10) - tps;
 			$fill.css('width', fill);
@@ -178,6 +177,8 @@ jQuery(function ($) {
 	$('.top-players').on('click', '#back', function () {
 			$('.top-players').css('left', '-100%');
 	});
+	
+	generateBoard();
 });
 
 //jQuery(function($) {
