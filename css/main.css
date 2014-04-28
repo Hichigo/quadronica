@@ -181,7 +181,6 @@
 	text-align: center;
 	font-family: Calibri;
 	font-size: 1.6em;
-	font-weight: bold;
 	text-transform: uppercase;
 	cursor: pointer;
 	transition: all .4s;
@@ -252,7 +251,8 @@
 	width: 45%;
 	height: 100%;
 	border: 1px solid #09f;
-	box-sizing: border-box
+	box-sizing: border-box;
+	font-family: Calibri;
 }
 .player:first-child {
 	float: left;
@@ -271,10 +271,17 @@
 .place {
 	width: 137px;
 	height: 33px;
-	line-height: 33px;
-	text-indent: 5px;
+	font-size: 0.9em;
 	float: left;
 	border-bottom: 1px dashed #09f;
+}
+
+.place span {
+	display: block;
+	text-indent: 5px;
+}
+.place span:last-child {
+	font-style: italic;
 }
 
 .scores {
@@ -283,4 +290,31 @@
 	line-height: 32px;
 	text-indent: 5px;
 	float: left;
+}
+
+#prev,
+#next {
+	position: absolute;
+	padding: 5px 10px;
+	font-family: Calibri;
+	color: #09f;
+	border: 3px double #09f;
+	transition: all .4s;
+	cursor: pointer;
+}
+
+#prev {
+	left: 5%;
+	text-align: right;
+}
+
+#next {
+	right: 5%;
+}
+
+#prev:hover,
+#next:hover {
+	background: #09f;
+	color: #fff;
+	border-color: #fff;
 }

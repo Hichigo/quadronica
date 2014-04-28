@@ -11,7 +11,7 @@ jQuery(function ($) {
 			run = 0,
 			score = 0,
 			timeID,
-			time = 120,
+			time = 10,
 			tps = 400 / time,
 			coordClick = [-1, -1],
 			click = false;
@@ -152,12 +152,24 @@ jQuery(function ($) {
 	$('.nav').on('click', '#start', function () {
 		$('.menu').slideUp();
 		$fill.css('width', 400);
+		score = 0;
 		timeID = setInterval(function () {
       var fill = parseInt($fill.css('width'), 10) - tps;
 			$fill.css('width', fill);
 			if(fill <= 0) {
 				clearInterval(timeID);
 				$('.menu').slideDown();
+				$.ajax({
+					type: 'post',
+					url: 'php/add_record.php',
+					data: 'score='+score,
+					success: function(data) {
+						console.log(data+'norm');
+					},
+					error: function(xhr, str) {
+						alert(xhr+'bad');
+					}
+				});
 			}
 		}, 1000);
 	});
