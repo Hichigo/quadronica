@@ -6,12 +6,11 @@ jQuery(function ($) {
 			$tr,
 			$score,
 			$fill,
-			score = 0,
 			id,
 			run = 0,
-			score = 0,
+			score,
 			timeID,
-			time = 10,
+			time = 50,
 			tps = 400 / time,
 			coordClick = [-1, -1],
 			click = false;
@@ -58,9 +57,10 @@ jQuery(function ($) {
   }
 
 	function animateScore() {
-		$score.text(score++);
+		score++;
+		$score.text(score);
     run--;
-    if (run === -1) {
+    if (run === 0) {
       clearInterval(id);
     }
   }
@@ -102,12 +102,15 @@ jQuery(function ($) {
 				ymin = min(y1, y2);
 
     animateQuad(1, xmin, ymin, xmax, ymax);
-		animateScore();
+//		animateScore();
+		score += run;
+		run = 0;
+		$score.text(score);
 
     setTimeout(function () {
       animateQuad(0, xmin, ymin, xmax, ymax);
     }, 300);
-    id = setInterval(animateScore, 500/run);
+//    id = setInterval(animateScore, 500/run);
   }
 
   function generateBoard() {
@@ -126,7 +129,6 @@ jQuery(function ($) {
 		$score = $('.score');
     $tr = $('.tr');
 		$fill = $('.fill-timer');
-		
 	}
 
   $('.board').on('click', '.td', function () {
@@ -148,30 +150,35 @@ jQuery(function ($) {
       reset(x, y);
     }
   });
-	
+
+	function stepTimer() {
+		var fill = parseInt($fill.css('width'), 10) - tps;
+		$fill.css('width', fill);
+		if (fill <= 0) {
+			clearInterval(timeID);
+			$('.menu').slideDown();
+//			setTimeout(function() {
+			$.ajax({
+				type: 'post',
+				url: 'php/add_record.php',
+				data: 'score='+score,
+				success: function(data) {
+					alert('Вы набрали '+score+' очков!');
+				},
+				error: function(xhr, str) {
+					alert(xhr+'bad');
+				}
+			});
+//			}, 2000);
+		}
+	}
+
 	$('.nav').on('click', '#start', function () {
 		$('.menu').slideUp();
 		$fill.css('width', 400);
 		score = 0;
-		timeID = setInterval(function () {
-      var fill = parseInt($fill.css('width'), 10) - tps;
-			$fill.css('width', fill);
-			if(fill <= 0) {
-				clearInterval(timeID);
-				$('.menu').slideDown();
-				$.ajax({
-					type: 'post',
-					url: 'php/add_record.php',
-					data: 'score='+score,
-					success: function(data) {
-						console.log(data+'norm');
-					},
-					error: function(xhr, str) {
-						alert(xhr+'bad');
-					}
-				});
-			}
-		}, 1000);
+		$score.text(score);
+		timeID = setInterval(stepTimer, 1000);
 	});
 	
 	$('.nav').on('click', '#top', function () {
@@ -192,19 +199,3 @@ jQuery(function ($) {
 	
 	generateBoard();
 });
-
-//jQuery(function($) {
-//  $('.menu').on('click', '#start', function() {
-//    init();
-//		$('.menu').slideUp();
-//    $fill.css('width', 365);
-//    timeID = setInterval(function() {
-//      var fill = parseInt($fill.css('width'), 10) - tps;
-//      $fill.css('width', fill);
-//      if(fill <= 0) {
-//        clearInterval(timeID);
-//        $('.menu').slideDown();
-//      }
-//    }, 1000);
-//  });
-//});
