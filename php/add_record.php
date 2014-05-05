@@ -1,20 +1,25 @@
 <?php
 	include 'connectDB.php';
 	
-	$name = rand();
-	$score = $_POST['score'];
+	$name = trim(htmlspecialchars($_POST['name']));
+	$score = trim(htmlspecialchars($_POST['score']));
+	$photo = trim(htmlspecialchars($_POST['photo']));
 
+	echo $name;
+	echo $score;
+	echo $photo;
 	$user = mysqli_query($link, "SELECT * FROM `users_data` WHERE name = '$name'") or die("Не удалось выполнить запрос ".mysqli_error($link));
 
 	if(mysqli_num_rows($user)) {
 		$row = mysqli_fetch_array($user);
 		$name = $row['name'];
+		echo $row['score'];
 		if($score > $row['score']) {
-			mysqli_query($link, "UPDATE `users_data` SET score = $score WHERE name = '$name'") or die("Не удалось выполнить запрос ".mysqli_error($link));
+			mysqli_query($link, "UPDATE `users_data` SET score = '$score', photo = '$photo' WHERE name = '$name'") or die("Не удалось выполнить запрос ".mysqli_error($link));
 		}
 	} else {
-		mysqli_query($link, "INSERT INTO `users_data` (`id`, `name`, `score`) VALUES ('', '".$name."', '".$score."')") or die("Не удалось выполнить запрос ".mysqli_error($link));
+		mysqli_query($link, "INSERT INTO `users_data` (`id`, `name`, `score`, `photo`) VALUES ('', '".$name."', '".$score."', '".$photo."')") or die("Не удалось выполнить запрос ".mysqli_error($link));
 	}
-	echo $name." - ".$score;
+
 	mysqli_close($link);
 ?>

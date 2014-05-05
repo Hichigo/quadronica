@@ -9,12 +9,28 @@ jQuery(function ($) {
 			id,
 			run = 0,
 			score,
+			name = '',
+			photo = '',
 			timeID,
 			time = 50,
 			tps = 400 / time,
 			coordClick = [-1, -1],
 			click = false;
 
+	VK.init(function() {
+		 // API initialization succeeded
+		 // Your code here
+			VK.api('users.get', {fields: 'photo_50'}, function(data) {
+				name = data.response[0].last_name+' '+data.response[0].first_name;
+				photo = data.response[0].photo_50;
+				alert('Привет '+name+'!');
+			});
+	}, function() {
+		 // API initialization failed
+		 // Can reload page here
+		 alert('Initialization failed!');
+	}, '5.21');
+	
   function equal(a, b) {
     return (a === b) ? true : false;
   }
@@ -161,9 +177,9 @@ jQuery(function ($) {
 			$.ajax({
 				type: 'post',
 				url: 'php/add_record.php',
-				data: 'score='+score,
+				data: 'name='+name+'&score='+score+'&photo='+photo,
 				success: function(data) {
-					alert('Вы набрали '+score+' очков!');
+					alert('Вы набрали '+score+'очков!');
 				},
 				error: function(xhr, str) {
 					alert(xhr+'bad');
