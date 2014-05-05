@@ -11,8 +11,9 @@ jQuery(function ($) {
 			score,
 			name = '',
 			photo = '',
+			user_id,
 			timeID,
-			time = 50,
+			time = 120,
 			tps = 400 / time,
 			coordClick = [-1, -1],
 			click = false;
@@ -23,6 +24,7 @@ jQuery(function ($) {
 			VK.api('users.get', {fields: 'photo_50'}, function(data) {
 				name = data.response[0].last_name+' '+data.response[0].first_name;
 				photo = data.response[0].photo_50;
+				user_id = data.response[0].id;
 				alert('Привет '+name+'!');
 			});
 	}, function() {
@@ -177,7 +179,7 @@ jQuery(function ($) {
 			$.ajax({
 				type: 'post',
 				url: 'php/add_record.php',
-				data: 'name='+name+'&score='+score+'&photo='+photo,
+				data: 'name='+name+'&score='+score+'&photo='+photo+'&id='+user_id,
 				success: function(data) {
 					alert('Вы набрали '+score+'очков!');
 				},
