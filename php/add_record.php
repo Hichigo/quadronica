@@ -1,6 +1,6 @@
 <?php
 	include 'connectDB.php';
-	
+
 	$name = trim(htmlspecialchars($_POST['name']));
 	$score = trim(htmlspecialchars($_POST['score']));
 	$photo = trim(htmlspecialchars($_POST['photo']));

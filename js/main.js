@@ -1,8 +1,10 @@
 jQuery(function ($) {
 	'use strict';
 	var board = '',
+			topi,
 			i,
 			j,
+			$player = $('.leader-board .player'),
 			$tr,
 			$score,
 			$fill,
@@ -18,6 +20,49 @@ jQuery(function ($) {
 			coordClick = [-1, -1],
 			click = false;
 
+	var Users = {
+			constructor: function(place, name, score, photo) {
+				this.place = place || 0;
+				this.name = name || 'none';
+				this.score = score || 0;
+				this.photo = photo || 'http://vk.com/images/camera_50.gif';
+				return this;
+			}
+		};
+	var users = [],
+			ajax = [];
+
+	var Ajax = {
+		constructor: function(place, num) {
+			this.place = place;
+			this.num = num;
+			return this;
+		},
+		result: function(i, place) {
+			$.ajax({
+				type: 'post',
+				url: 'php/get_record.php',
+				data: 'place='+this.place,
+				beforeSend: function() {
+					$player.eq(i).find('.foto').css('background-image', 'url(img/ajax-loader.gif)');
+				},
+				success: function(data) {
+					var sliceData = data.split(', ');
+					var ajname = sliceData[0] || 'none',
+							ajscore = sliceData[1] || 0,
+							ajphoto = sliceData[2] || 'http://vk.com/images/camera_50.gif';
+					$player.eq(i).find('.foto').css('background-image', 'url('+sliceData[2]+')');
+					$player.eq(i).find('span').eq(0).text((place+1)+' - место');
+					$player.eq(i).find('span').eq(1).text(sliceData[0]);
+					$player.eq(i).find('.scores').text('Очки: '+sliceData[1]);
+				},
+				error: function(xhr, str) {
+					alert(xhr+'bad');
+				}
+			});
+		}
+	};
+	
 	VK.init(function() {
 		 // API initialization succeeded
 		 // Your code here
@@ -175,7 +220,6 @@ jQuery(function ($) {
 		if (fill <= 0) {
 			clearInterval(timeID);
 			$('.menu').slideDown();
-//			setTimeout(function() {
 			$.ajax({
 				type: 'post',
 				url: 'php/add_record.php',
@@ -187,7 +231,16 @@ jQuery(function ($) {
 					alert(xhr+'bad');
 				}
 			});
-//			}, 2000);
+		}
+	}
+	
+	function getRecord() {
+		for (i = topi, j = 0; i < topi+10; i++, j++) {
+			ajax[j] = Object.create(Ajax).constructor(i, j);
+		}
+		
+		for (i = 0, j = topi-1; i < 10; i++, j++) {
+			ajax[i].result(i, j);
 		}
 	}
 
@@ -201,18 +254,42 @@ jQuery(function ($) {
 	
 	$('.nav').on('click', '#top', function () {
 		$('.top-players').css('left', 0);
+		topi = 1;
+		
+		for (i = 0; i < 10; i++) {
+			users[i] = Object.create(Users).constructor();
+		}
+		getRecord();
+
 	});
 	
 	$('.nav').on('click', '#about', function () {
 		$('.about').css('left', 0);
+		
 	});
 	
 	$('.about').on('click', '#back', function () {
-			$('.about').css('left', '100%');
+		$('.about').css('left', '100%');
 	});
 	
 	$('.top-players').on('click', '#back', function () {
-			$('.top-players').css('left', '-100%');
+		$('.top-players').css('left', '-100%');
+	});
+	
+	$('.top-players').on('click', '#next', function () {
+		if (topi+10 > 91) {
+			return;
+		}
+		topi += 10;
+		getRecord();
+	});
+	
+	$('.top-players').on('click', '#prev', function () {
+		if (topi-10 < 1) {
+			return;
+		}
+		topi -= 10;
+		getRecord();
 	});
 	
 	generateBoard();

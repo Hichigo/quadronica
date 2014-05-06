@@ -266,6 +266,8 @@
 	height: 67px;
 	float: left;
 	border-right: 1px dashed #09f;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .place {
